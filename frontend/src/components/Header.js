@@ -17,7 +17,7 @@ const Header = () => {
                                 <i className='fas fa-shopping-cart'></i> Cart
                             </Link>
                             <Link href='/login'>
-                            <i className='fas fa-user'></i> Sign In
+                                <i className='fas fa-user'></i> Sign In
                             </Link>
                         </Nav>
                     </Collapse>
