@@ -26,7 +26,6 @@ app.get('/api/products/:id', (req, res) => {
     res.json(product);
 });
 
-
 // Listen endpoints
 const PORT = process.env.PORT || 5000;
 
