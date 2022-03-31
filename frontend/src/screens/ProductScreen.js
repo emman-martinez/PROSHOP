@@ -14,7 +14,9 @@ export const ProductScreen = ({ match }) => {
         setProduct(data);
     };
     fetchProduct();
-  }, []);
+  }, [match]);
+
+  if (product.rating === undefined) return null;
 
   return (
     <>
