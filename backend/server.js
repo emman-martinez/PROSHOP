@@ -1,10 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import connectDB from './config/db.js';
 import products from './data/products.js';
 
+// Environment Variables
 dotenv.config();
 
-// Crear el servidor de express
+// Data base
+connectDB();
+
+// Create the server
 const app = express();
 
 app.get('/', (req, res) => {
@@ -21,7 +26,7 @@ app.get('/api/products/:id', (req, res) => {
 });
 
 
-// Escuchar Peticiones
+// Listen endpoints
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
