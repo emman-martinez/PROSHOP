@@ -5,6 +5,8 @@ import Product from '../models/productModel.js';
 // Get Products
 export const getProducts = asyncHandler(async(req, res = express.response) => {
     const products = await Product.find({});
+    // res.status(401)
+    // throw new Error('Not Authorized')
     res.json(products);
 });
 
@@ -17,5 +19,5 @@ export const getProductId = asyncHandler(async(req, res = express.response) => {
     } else {
         res.status(404);
         throw new Error('Product not found');
-    } 
+    }
 });
