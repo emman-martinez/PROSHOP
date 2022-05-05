@@ -1,11 +1,10 @@
-import React, { useEffect /* , useState */ } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 import { listProducts } from '../redux/actions/productActions';
 import { Loader } from '../components/Loader';
 import { Message } from '../components/Message';
 import { Product } from '../components/Product';
-// import axios from 'axios';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -16,14 +15,6 @@ export const HomeScreen = () => {
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //       const { data } = await axios.get('/api/products');
-  //       setProducts(data);
-  //   };
-  //   fetchProducts();
-  // }, []);
   
   return (
     <>
@@ -52,3 +43,14 @@ const RowProducts = ({ products }) => {
   </Row>
   );
 };
+
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// const [products, setProducts] = useState({});
+// useEffect(() => {
+//   const fetchProducts = async () => {
+//       const { data } = await axios.get('/api/products');
+//       setProducts(data);
+//   };
+//   fetchProducts();
+// }, []);

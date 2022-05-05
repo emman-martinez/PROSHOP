@@ -1,35 +1,33 @@
-import React, { useEffect /* , useState */ } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { 
   Button, 
   Card, 
-  Col, 
+  Col,
+  Form,
   Image, 
   ListGroup, 
   Row, 
 } from 'react-bootstrap';
-// import axios from 'axios';
 import { listProductDetails } from '../redux/actions/productActions';
 import { Rating } from '../components/Rating';
 import { Loader } from '../components/Loader';
 import { Message } from '../components/Message';
 
-export const ProductScreen = ({ match }) => {
-  // const [product, setProduct] = useState({});
+export const ProductScreen = ({ history, match }) => {
+  const [qty, setQty] = useState(0);
   const dispatch = useDispatch();
   const productDetails = useSelector(state => state.productDetails);
   const { error, loading, product } = productDetails;
-  // useEffect(() => {
-  //   const fetchProduct = async () => {
-  //       const { data } = await axios.get(`/api/products/${ match.params.id }`);
-  //       setProduct(data);
-  //   };
-  //   fetchProduct();
-  // }, [match]);
+  
   useEffect(() => {
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
+
+  const addToCartHandler = () => {
+    history.push(`/cart/${ match.params.id }?qty=${ qty === 0 ? 1 : qty }`);
+  };
   
   if (product.rating === undefined) return null;
 
@@ -43,13 +41,18 @@ export const ProductScreen = ({ match }) => {
             ? <Loader /> 
             : error 
               ? <Message variant='danger'>{ error }</Message>
-              : <RowProduct product={ product } />
+              : <RowProduct 
+                  addToCartHandler={ addToCartHandler } 
+                  product={ product } 
+                  qty={ qty } 
+                  setQty={ setQty } 
+                />
       }
     </>
   );
 };
 
-const RowProduct = ({ product }) => {
+const RowProduct = ({ addToCartHandler, product, qty, setQty }) => {
   const { Item } = ListGroup;
 
   return (
@@ -96,11 +99,13 @@ const RowProduct = ({ product }) => {
                 </Col>
               </Row>
             </Item>
+            { product.countInStock > 0 && <QtyItem product={ product } qty={ qty } setQty={ setQty } /> }
             <Item>
               <Button 
                 className='btn-block'
                 disabled={ product.countInStock === 0 }
                 type='button'
+                onClick={ addToCartHandler }
               >
                 Add To Cart
               </Button>
@@ -111,3 +116,42 @@ const RowProduct = ({ product }) => {
     </Row>
   );
 };
+
+const QtyItem = ({ product, qty, setQty }) => {
+  const { Control } = Form;
+  const { Item } = ListGroup;
+  const { countInStock } = product;
+
+  return (
+    <Item>
+      <Row>
+        <Col>Qty</Col>
+        <Col>
+          <Control 
+            as='select'
+            onChange={ (e) => setQty(e.target.value) }
+            value={ qty }
+          >
+            {
+              [...Array(countInStock).keys()].map(x => (
+                <option key={ x + 1 } value={ x + 1 }>
+                  { x + 1 }
+                </option>
+              ))
+            }
+          </Control>
+        </Col>
+      </Row>
+    </Item>
+  );
+};
+
+// import axios from 'axios';
+// const [product, setProduct] = useState({});
+// useEffect(() => {
+//   const fetchProduct = async () => {
+//       const { data } = await axios.get(`/api/products/${ match.params.id }`);
+//       setProduct(data);
+//   };
+//   fetchProduct();
+// }, [match]);
