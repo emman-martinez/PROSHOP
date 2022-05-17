@@ -11,7 +11,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { Message } from '../components/Message';
-import { addToCart } from '../redux/actions/cartActions';
+import { addToCart, removeFromCart } from '../redux/actions/cartActions';
 
 export const CartScreen = ({ history, match, location }) => {
   const productId = match.params.id;
@@ -27,7 +27,7 @@ export const CartScreen = ({ history, match, location }) => {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandle = (id) => {
-
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
@@ -88,7 +88,7 @@ const RowCartItems = ({
                       </Col>
                       <Col md={ 2 }>
                           <Button 
-                            onclick={ () => removeFromCartHandle(item.product) }
+                            onClick={ () => removeFromCartHandle(item.product) }
                             type='button'
                             variant='light'
                           >
@@ -116,7 +116,7 @@ const RowCartItems = ({
             <Item>
               <Button
                 className='btn-block'
-                disabled={ cartItems.kength === 0 }
+                disabled={ cartItems.length === 0 }
                 onClick={ checkoutHandler }
                 type='button'
               >
